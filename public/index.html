@@ -8,10 +8,10 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
     />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-    <title>Ds Catalog</title>
+    <title><%= process.env.VUE_APP_NAME %></title>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,500,700"
     />
     <link
       rel="stylesheet"
@@ -21,8 +21,8 @@
   <body>
     <noscript>
       <strong>
-        We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to continue.
+        We're sorry but <%= process.env.VUE_APP_NAME %> doesn't work properly
+        without JavaScript enabled. Please enable it to continue.
       </strong>
     </noscript>
     <div id="app"></div>
