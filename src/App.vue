@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark> My App bar </v-app-bar>
+    <AppBar />
 
     <v-main>
       <v-container>
@@ -12,9 +12,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { AppBar } from '@/components/AppBar'
 
 export default Vue.extend({
   name: 'App',
-  data: () => ({}),
+
+  components: {
+    AppBar,
+  },
 })
 </script>
