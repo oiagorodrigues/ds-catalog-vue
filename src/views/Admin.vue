@@ -1,11 +1,11 @@
 <template>
-  <div>Home Page</div>
+  <div>Admin Page</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'HomePage',
+  name: 'AdminPage',
 })
 </script>
