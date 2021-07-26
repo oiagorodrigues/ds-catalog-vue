@@ -48,7 +48,7 @@ const wait = (timeout?: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout))
 }
 
-const resizeWindow = (
+export const resizeWindow = (
   width = window.innerWidth,
   height = window.innerHeight
 ) => {
@@ -60,4 +60,4 @@ const resizeWindow = (
 
 export * from '@testing-library/vue'
 
-export { renderApp as render, resizeWindow, wait }
+export { renderApp as render }

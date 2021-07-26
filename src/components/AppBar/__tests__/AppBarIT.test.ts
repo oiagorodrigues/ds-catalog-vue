@@ -1,64 +1,71 @@
-import { render, fireEvent, screen, waitFor, resizeWindow } from 'test-utils'
+import { CreateElement } from 'vue'
+import { render, fireEvent, waitFor, resizeWindow } from 'test-utils'
 import App from '@/App.vue'
+
+const mockedHomePage = 'Home Page'
+const mockedAdminPage = 'Admin Page'
 
 jest.mock('@/views/Home.vue', () => ({
   name: 'HomePage',
-  render: (h: any) => h('h1', 'Home Page'),
-}))
-
-jest.mock('@/views/Store.vue', () => ({
-  name: 'StorePage',
-  render: (h: any) => h('h1', 'Store Page'),
+  render: (h: CreateElement) => h('h1', mockedHomePage),
 }))
 
 jest.mock('@/views/Admin.vue', () => ({
   name: 'AdminPage',
-  render: (h: any) => h('h1', 'Admin Page'),
+  render: (h: CreateElement) => h('h1', mockedAdminPage),
 }))
 
 afterEach(async () => {
-  jest.resetAllMocks()
   await resizeWindow(1400)
 })
 
 describe('AppBar Integration Tests', () => {
-  it('should render correct app menu on desktop', async () => {
-    await render(App)
+  describe('on higher screens', () => {
+    it('should render/interact w/ correct app menu', async () => {
+      const { getByLabelText, queryByText, getByText } = await render(App)
 
-    const menu = screen.getByRole('menu')
+      const menu = getByLabelText(/menu principal desktop/i)
 
-    expect(menu).toHaveAttribute('aria-label', 'Menu Principal Desktop')
-    expect(menu).toBeVisible()
-    expect(menu.children.length).toBeGreaterThan(0)
+      expect(menu).toBeVisible()
+      expect(menu.children.length).toBeGreaterThan(0)
+
+      expect(queryByText(mockedHomePage)).toBeInTheDocument()
+      expect(queryByText(mockedAdminPage)).not.toBeInTheDocument()
+
+      const storeMenu = getByText(/admin/i)
+      await fireEvent.click(storeMenu)
+
+      await waitFor(() => {
+        expect(queryByText(mockedHomePage)).not.toBeInTheDocument()
+        expect(queryByText(mockedAdminPage)).toBeInTheDocument()
+      })
+    })
   })
 
-  it('should render correct app menu on mobile', async () => {
-    await resizeWindow(300)
-    await render(App)
+  describe('on mobile', () => {
+    it('should render/interact w/ correct app menu', async () => {
+      await resizeWindow(300)
+      const { getByText, queryByText, getByLabelText, getByRole } =
+        await render(App)
 
-    const menuActivator = screen.getByRole('button', { name: /abrir menu/i })
-    await fireEvent.click(menuActivator)
+      const menuActivator = getByRole('button', { name: /abrir menu/i })
+      await fireEvent.touch(menuActivator)
 
-    const menu = screen.getByTestId('appMenuMobile')
-    expect(menu).toHaveAttribute('role', 'menu')
-    expect(menu).toHaveAttribute('aria-label', 'Menu Principal Mobile')
-    expect(menu.children.length).toBeGreaterThan(0)
-  })
+      await waitFor(async () => {
+        const menu = getByLabelText(/menu principal mobile/i)
+        expect(menu).toBeVisible()
+        expect(menu.children.length).toBeGreaterThan(0)
 
-  it('should change route when clicking on a menu item', async () => {
-    await render(App)
+        expect(queryByText(mockedHomePage)).toBeInTheDocument()
+        expect(queryByText(mockedAdminPage)).not.toBeInTheDocument()
 
-    expect(screen.queryByText('Home Page')).toBeInTheDocument()
-    expect(screen.queryByText('Store Page')).not.toBeInTheDocument()
-    expect(screen.queryByText('Admin Page')).not.toBeInTheDocument()
+        await fireEvent.click(getByText(/admin/i))
 
-    const storeMenu = screen.getByRole('menuitem', { name: /admin/i })
-    await fireEvent.click(storeMenu)
-
-    await waitFor(() => {
-      expect(screen.queryByText('Store Page')).not.toBeInTheDocument()
-      expect(screen.queryByText('Home Page')).not.toBeInTheDocument()
-      expect(screen.queryByText('Admin Page')).toBeInTheDocument()
+        await waitFor(() => {
+          expect(queryByText(mockedHomePage)).not.toBeInTheDocument()
+          expect(queryByText(mockedAdminPage)).toBeInTheDocument()
+        })
+      })
     })
   })
 })
