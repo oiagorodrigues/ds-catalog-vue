@@ -3,7 +3,7 @@
     <AppBar />
 
     <v-main>
-      <v-container>
+      <v-container class="fill-height align-start">
         <router-view />
       </v-container>
     </v-main>
