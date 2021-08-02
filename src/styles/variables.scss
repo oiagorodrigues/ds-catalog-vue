@@ -1,2 +1,22 @@
 // Globals
 $body-font-family: 'Open Sans', serif;
+$custom-box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25) !important;
+
+// colors
+$black: #263238;
+
+$material-light: (
+  'text': (
+    'primary': $black,
+  ),
+);
+
+// VBtn
+$btn-border-radius: 10px;
+$btn-font-weight: 700;
+$btn-sizes: (
+  'x-large': 50,
+);
+$fab-icon-sizes: (
+  'x-small': 18,
+);

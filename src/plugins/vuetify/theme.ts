@@ -1,5 +1,3 @@
-import colors from 'vuetify/lib/util/colors'
-
 export default {
   themes: {
     light: {
@@ -8,7 +6,7 @@ export default {
         lighten4: '#C5D7FF',
       },
       secondary: {
-        base: colors.grey.base,
+        base: '#9E9E9E',
         lighten2: '#93999C',
         lighten5: '#F2F2F2',
       },
